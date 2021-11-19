@@ -1,27 +1,54 @@
-package com.kannoakuma.kanbionback.accounts.models;
+package com.kannoakuma.kanbionback.accounts.model.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
+@Entity
 @Data
-@AllArgsConstructor
-public class Account implements UserDetails {
+@NoArgsConstructor
+public class Account implements UserDetails, Serializable {
 
-    private String user;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(unique=true)
+    private String username;
+
     private String password;
-    private Collection<GrantedAuthority> authorities;
+
+    private String role;
+
     private boolean accountNonExpired;
+
     private boolean accountNonLocked;
+
     private boolean credentialsNonExpired;
+
     private boolean enabled;
+
+    public Account(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role.getName();
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.credentialsNonExpired = true;
+        this.enabled = true;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        Collection<Role> result = new ArrayList<>();
+        result.add(Roles.ROLE_USER.getGrantedAuthority());
+        return result;
     }
 
     @Override
@@ -31,7 +58,7 @@ public class Account implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.user;
+        return this.username;
     }
 
     @Override

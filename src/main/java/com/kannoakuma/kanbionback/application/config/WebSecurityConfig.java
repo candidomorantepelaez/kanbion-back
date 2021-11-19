@@ -1,6 +1,6 @@
-package com.kannoakuma.kanbionback.config;
+package com.kannoakuma.kanbionback.application.config;
 
-import com.kannoakuma.kanbionback.accounts.models.AccountServiceImpl;
+import com.kannoakuma.kanbionback.accounts.model.services.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/accounts")
+                .antMatchers("/account")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
